@@ -1,0 +1,38 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.getproductinfo.activity"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="15"
+        android:targetSdkVersion="19" />
+
+    <uses-permission android:name="com.google.android.glass.permission.DEVELOPMENT" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@android:style/Theme.DeviceDefault" >
+        <activity
+            android:name="com.getproductinfo.activity.AppLaunchActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="com.google.android.glass.action.VOICE_TRIGGER" />
+            </intent-filter>
+
+            <meta-data
+                android:name="com.google.android.glass.VoiceTrigger"
+                android:resource="@xml/voice_trigger" />
+        </activity>
+        
+        <activity android:name="com.github.barcodeeye.scan.CaptureQRCodeActivity" />
+        <activity android:name="com.getproductinfo.activity.GetMoreInfoActivity" />
+        <activity android:name="com.getproductinfo.activity.SelectFlowActivity" />
+        <activity android:name="com.getproductinfo.activity.SelectStoreActivity" />
+        <activity android:name="com.getproductinfo.activity.ShowResultActivity" />
+    </application>
+
+</manifest>
