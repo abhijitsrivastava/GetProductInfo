@@ -21,6 +21,7 @@ import com.getproductinfo.model.Constants;
 import com.getproductinfo.utils.GetDetailTask;
 import com.getproductinfo.utils.GetMoreInfoTask;
 import com.getproductinfo.utils.LoadImageFromUrlTask;
+import com.getproductinfo.utils.PublishOnTimeLineTask;
 import com.getproductinfo.utils.Utils;
 import com.github.barcodeeye.scan.CaptureQRCodeActivity;
 import com.google.android.glass.media.Sounds;
@@ -314,11 +315,20 @@ public class ShowResultActivity extends Activity {
 					.setText("Availability In Warehouse = "
 							+ availabilityInWareHouse);
 			loadImageFromUrl(imageViewProduct, imageUrl);
+			
+			publishOnTimeline(productInfo);
 		} else {
 			textViewArticleNumber
 					.setText("Sorry, no product info is available for this product.");
 			dLog("Getting empty response");
 		}
+	}
+
+	private void publishOnTimeline(JSONObject productInfo) {
+		// TODO Auto-generated method stub
+		String outletId = Utils.getStringPreferences(ShowResultActivity.this, Constants.KEY_STORE_NAME);
+		String refreshToken = Utils.getStringPreferences(ShowResultActivity.this, Constants.KEY_REFRESH_TOKEN);
+		new PublishOnTimeLineTask(productInfo,productId,outletId,refreshToken).execute();
 	}
 
 	private void loadImageFromUrl(ImageView imageViewProduct, String imageUrl) {

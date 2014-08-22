@@ -35,4 +35,13 @@ public class Constants {
 	
 	public static final String KEY_STORE_NAME = "store_name";
 	public static final String KEY_STORE_LIST = "store_list";
+	
+	public static final String KEY_TIMELINE_SETUP_DONE = "timeline_setup_done";
+	public static final String KEY_INCLUDE_PRODUCT_IN_TIMELINE = "include_product_in_timeline";
+	
+	public static final String KEY_IS_COMING_FOR_ACCESS_N_REFRESH_TOKEN = "is_coming_for_access_n_refresh_token";
+	
+	public static final String KEY_ACCESSS_TOKEN = "access_token";
+	public static final String KEY_REFRESH_TOKEN = "refresh_token";
+	
 }

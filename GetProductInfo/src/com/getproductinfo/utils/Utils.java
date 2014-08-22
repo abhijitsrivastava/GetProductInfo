@@ -41,6 +41,32 @@ public class Utils {
 		String savedPref = sharedPreferences.getString(key, "");
 		return savedPref;
 	}
+	
+	
+	public static void saveBooleanPreferences(Context context, String key,
+			Boolean value) {
+		SharedPreferences sPrefs = PreferenceManager
+				.getDefaultSharedPreferences(context);
+		SharedPreferences.Editor editor = sPrefs.edit();
+		editor.putBoolean(key, value);
+		editor.commit();
+	}
+
+	public static void deleteBooleanPreferences(Context context, String key) {
+		SharedPreferences sPrefs = PreferenceManager
+				.getDefaultSharedPreferences(context);
+		SharedPreferences.Editor editor = sPrefs.edit();
+		editor.remove(key);
+		editor.commit();
+	}
+
+	public static boolean getBooleanPreferences(Context context, String key) {
+		SharedPreferences sharedPreferences = PreferenceManager
+				.getDefaultSharedPreferences(context);
+		boolean savedPref = sharedPreferences.getBoolean(key, false);
+		return savedPref;
+	}
+	
 
 	public static HttpResponse makeRequest(String url, JSONObject params)
 			throws ClientProtocolException, IOException {

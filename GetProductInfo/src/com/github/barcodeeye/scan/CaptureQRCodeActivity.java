@@ -34,8 +34,11 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.WindowManager;
 
+import com.getproductinfo.activity.AppLaunchActivity;
 import com.getproductinfo.activity.R;
 import com.getproductinfo.activity.ShowResultActivity;
+import com.getproductinfo.model.Constants;
+import com.getproductinfo.utils.Utils;
 import com.github.barcodeeye.BaseGlassActivity;
 import com.github.barcodeeye.migrated.AmbientLightManager;
 import com.github.barcodeeye.migrated.BeepManager;
@@ -292,22 +295,40 @@ public final class CaptureQRCodeActivity extends BaseGlassActivity implements
     // Put up our own UI for how to handle the decoded contents.
     private void handleDecodeInternally(Result rawResult, Bitmap barcode) {
 
-        Uri imageUri = null;
-                    
         Log.v(TAG, rawResult.getText().toString());
+        String scannedData = rawResult.getText().toString();
         
-        String productId = rawResult.getText().toString();
+        Bundle bundle = getIntent().getExtras();
+        boolean isComingForAccessNRefreshToken = bundle.getBoolean(Constants.KEY_IS_COMING_FOR_ACCESS_N_REFRESH_TOKEN);
         
-        if (productId != null) {
-        	Log.d("inside if", "qr code matched");        
-        	
-        	Intent intent = new Intent(CaptureQRCodeActivity.this, ShowResultActivity.class);
-        	intent.putExtra("product_id",productId);
-        	
-        	finish();
-        	startActivity(intent);
-        	
-		} else {
+        Intent intent = null;
+        
+        if (scannedData != null) {
+        	if (isComingForAccessNRefreshToken) {
+        		
+        		String[] tokens = scannedData.split(",");
+        		
+        		Utils.saveStringPreferences(CaptureQRCodeActivity.this, Constants.KEY_ACCESSS_TOKEN, tokens[0]);
+        		Utils.saveStringPreferences(CaptureQRCodeActivity.this, Constants.KEY_REFRESH_TOKEN, tokens[1]);
+        		
+        		Utils.saveBooleanPreferences(CaptureQRCodeActivity.this, Constants.KEY_TIMELINE_SETUP_DONE, true);
+             	Utils.saveBooleanPreferences(CaptureQRCodeActivity.this, Constants.KEY_INCLUDE_PRODUCT_IN_TIMELINE, true);
+             	
+             	intent = new Intent(CaptureQRCodeActivity.this, AppLaunchActivity.class);
+            	finish();
+            	startActivity(intent);
+             	
+        		
+    		} else {
+    			Log.d("inside if", "qr code matched");        
+            	
+            	intent = new Intent(CaptureQRCodeActivity.this, ShowResultActivity.class);
+            	intent.putExtra("product_id",scannedData);
+            	
+            	finish();
+            	startActivity(intent);
+    		}
+	} else {
 			Log.d("inside else", "qr code not matched");
 			onPause();
 			onResume();
