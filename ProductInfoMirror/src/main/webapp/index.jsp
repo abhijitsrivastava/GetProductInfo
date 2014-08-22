@@ -68,7 +68,7 @@ System.out.println("access token: "+credential.getAccessToken());
   <div class="row">
    
     <div align="center" >
-      	<img src="https://api.qrserver.com/v1/create-qr-code/?data=<%=credential.getAccessToken()%>&amp;size=450x450" alt="" title="" />
+      	<img src="https://api.qrserver.com/v1/create-qr-code/?data=<%=credential.getAccessToken()+","+credential.getRefreshToken()%>&amp;size=450x450" alt="" title="" />
       
     </div>
 

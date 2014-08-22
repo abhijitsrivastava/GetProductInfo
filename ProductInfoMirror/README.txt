@@ -22,4 +22,19 @@ Client secret : 72ghUtkucOS8LMOQUHcUrKdh
 Server Setup:
 1. Install java : follow steps from here : https://www.digitalocean.com/community/tutorials/how-to-install-java-on-ubuntu-with-apt-get
 
-2. Install maven
+2. Install maven : http://www.mkyong.com/maven/how-to-install-maven-in-ubuntu/
+
+3. Install Git: https://www.digitalocean.com/community/tutorials/how-to-install-git-on-ubuntu-14-04
+
+Checkout code from git by using : git clone https://github.com/abhijitsrivastava/GetProductInfo.git
+
+4. Go inside folder : /GetProductInfo/ProductInfoMirror
+
+5. execute command: mvn install
+
+6. execute command : mvn jetty:run (this will start the server)
+
+7. Now you can access the app in the browser at http://<servername>:8080
+
+
+
