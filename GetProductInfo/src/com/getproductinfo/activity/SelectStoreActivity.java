@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,7 +21,8 @@ import android.widget.Toast;
 
 import com.getproductinfo.model.Constants;
 import com.getproductinfo.model.Store;
-import com.getproductinfo.utils.GetStoreTask;
+import com.getproductinfo.model.StoresList;
+import com.getproductinfo.session.AppSession;
 import com.getproductinfo.utils.Utils;
 import com.github.barcodeeye.scan.CaptureQRCodeActivity;
 import com.google.android.glass.app.Card;
@@ -40,20 +42,56 @@ public class SelectStoreActivity extends Activity {
 	private List<Card> mCards;
 	private CardScrollView mCardScrollView;
 
-	private List<Store> storesList;
+	// private List<Store> storesList;
+	private String stores;
+
+	private String storesListAsString = null;
+	private String[] storesListAsStringArray = null;
+	private List<Store> storesListAsList = null;
+	private Store store = null;
+
+	private StoresList storesList;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// Call web service and display the list of available outlets
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-		getWindow().requestFeature(WindowUtils.FEATURE_VOICE_COMMANDS);
+		//getWindow().requestFeature(WindowUtils.FEATURE_VOICE_COMMANDS);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		setContentView(R.layout.activity_select_store);
+
+		storesListAsList = new ArrayList<Store>();
+	
+		// onCompleteGetStoreTask(storesListAsList);
 
 		mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 		mGestureDetector = createGestureDetector(this);
+		
+		// Bundle b = getIntent().getExtras(); //Get the intent's extras
 
-		new GetStoreTask(SelectStoreActivity.this).execute();
+		// storesList = b.getParcelable("stores"); //get our list
+
+		// convert parcelable list into nomal list
+
+		/*
+		 * for (Store store : storesList) { storesListAsList.add(store); }
+		 */
+		/*
+		 * storesListAsString = b.getString(Constants.KEY_STORE_LIST); if
+		 * (!"".equalsIgnoreCase(storesListAsString)) { storesListAsList = new
+		 * ArrayList<Store>(); storesListAsStringArray =
+		 * storesListAsString.split(",");
+		 * 
+		 * for (int i = 0; i < storesListAsStringArray.length; i++) { store =
+		 * new Store(); store.setActive(storesListAsStringArray[i]);
+		 * store.setName(storesListAsStringArray[i+1]);
+		 * store.setNumber(storesListAsStringArray[i+2]);
+		 * store.setWwsEndpoint(storesListAsStringArray[i+3]);
+		 * storesListAsList.add(store); } }
+		 */
+
+		// new GetStoreTask(SelectStoreActivity.this).execute();
 	}
 
 	@Override
@@ -64,6 +102,21 @@ public class SelectStoreActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
+		storesListAsList = AppSession.getInstance().getStoresList();
+		if(null == storesListAsList){
+			showToast("Error Fetching Stores, Please Try Again Later.");
+		}else{
+			new Handler().postDelayed(new Runnable() {
+
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+					openOptionsMenu();
+					showToast("Swipe left/right to scroll");
+				}
+			}, 1000);
+		}
+		
 	}
 
 	@Override
@@ -81,11 +134,11 @@ public class SelectStoreActivity extends Activity {
 		super.onDestroy();
 	}
 
-	@Override
+	/*@Override
 	public boolean onCreatePanelMenu(int featureId, Menu menu) {
 		if (featureId == WindowUtils.FEATURE_VOICE_COMMANDS) {
 			if (storesList != null) {
-				int i = 1;
+				int i = 0;
 				for (Store store : storesList) {
 					menu.addSubMenu(0, i, Menu.NONE, store.getName());
 					i++;
@@ -104,8 +157,16 @@ public class SelectStoreActivity extends Activity {
 			if (item.getTitle() != null
 					|| "".equalsIgnoreCase(item.getTitle().toString())) {
 
+				int storeSecquecneNo = item.getItemId();
+
 				Utils.saveStringPreferences(this, Constants.KEY_STORE_NAME,
 						item.getTitle().toString());
+
+				Utils.saveStringPreferences(this, Constants.KEY_STORE_ID,
+						storesListAsList.get(storeSecquecneNo).getNumber());
+				Utils.saveStringPreferences(this,
+						Constants.KEY_STORE_WEB_SERVICE_IP, storesListAsList
+								.get(storeSecquecneNo).getWwsEndpoint());
 
 				Bundle bundle = getIntent().getExtras();
 				if (bundle != null) {
@@ -129,16 +190,20 @@ public class SelectStoreActivity extends Activity {
 		// Good practice to pass through to super if not handled
 		return super.onMenuItemSelected(featureId, item);
 	}
-
+*/
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		menu.clear();
-		if (storesList != null) {
+		dLog("onPrepareOptionsMenu");
+		if (storesListAsList != null) {
+			dLog("storesList is not null");
 			int i = 1;
-			for (Store store : storesList) {
-				menu.addSubMenu(0, i, Menu.NONE, store.getName());
+			for (Store store : storesListAsList) {
+				menu.add(0, i, Menu.NONE, store.getName());
 				i++;
 			}
+		}else{
+			menu.add(0, 1, Menu.NONE, "No Store");
 		}
 		return super.onPrepareOptionsMenu(menu);
 	}
@@ -146,12 +211,29 @@ public class SelectStoreActivity extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		mAudioManager.playSoundEffect(Sounds.TAP);
-
+		dLog("onOptionsItemSelected");
+		
 		if (item.getTitle() != null
 				|| "".equalsIgnoreCase(item.getTitle().toString())) {
+			
+			//closeOptionsMenu();
 
 			Utils.saveStringPreferences(this, Constants.KEY_STORE_NAME, item
 					.getTitle().toString());
+			
+			int storeSecquecneNo = item.getItemId() -1 ;
+			
+			Utils.saveStringPreferences(this, Constants.KEY_STORE_ID,
+					storesListAsList.get(storeSecquecneNo).getNumber());
+			Utils.saveStringPreferences(this,
+					Constants.KEY_STORE_WEB_SERVICE_IP, storesListAsList
+							.get(storeSecquecneNo).getWwsEndpoint());
+			
+			dLog("storeSecquecneNo : "+storeSecquecneNo);
+			dLog("KEY_STORE_ID : "+storesListAsList.get(storeSecquecneNo).getNumber());
+			dLog("KEY_STORE_WEB_SERVICE_IP : "+ Utils.getStringPreferences(this,
+					Constants.KEY_STORE_WEB_SERVICE_IP));
+			
 
 			Bundle bundle = getIntent().getExtras();
 			if (bundle != null) {
@@ -194,6 +276,7 @@ public class SelectStoreActivity extends Activity {
 					dLog("Gesture.TAP");
 					mAudioManager.playSoundEffect(Sounds.TAP);
 					openOptionsMenu();
+					showToast("Swipe left/right to scroll");
 					return true;
 				} else if (gesture == Gesture.SWIPE_DOWN) {
 					dLog("Gesture.SWIPE_DOWN");
@@ -226,12 +309,12 @@ public class SelectStoreActivity extends Activity {
 	public void onCompleteGetStoreTask(List<Store> storesList) {
 		eLog("productInfo" + storesList);
 
-		this.storesList = storesList;
+		// this.storesList = storesList;
 
 		Card card;
 		if (storesList != null) {
 			mCards = new ArrayList<Card>();
-			for (Store store : storesList) {
+			for (Store store : storesListAsList) {
 				card = new Card(this);
 				card.setText(store.getName());
 				mCards.add(card);
@@ -246,25 +329,11 @@ public class SelectStoreActivity extends Activity {
 					Toast.LENGTH_SHORT).show();
 		} else {
 			card = new Card(this);
-			card.setText("There is no available store.");
+			card.setText("There is no available store.\nPlease try again !!");
 			View cardView = card.getView();
 			setContentView(cardView);
 			dLog("Getting empty response");
 		}
-
-		/**
-		 * Display list of stores and once the user select any store save it in
-		 * the SharedPreferences. and run the following code.
-		 * 
-		 * Bundle bundle = getIntent().getExtras(); if (bundle != null) {
-		 * isComingFromAppLaunchActivity = bundle.getBoolean(Constants.
-		 * KEY_IS_COMING_FROM_APP_LAUNCH_ACTIVITY); } Intent intent = null;
-		 * 
-		 * if (isComingFromAppLaunchActivity) { intent = new
-		 * Intent(SelectStoreActivity.this,CaptureQRCodeActivity.class); } else
-		 * { intent = new Intent(SelectStoreActivity.this,
-		 * SelectFlowActivity.class); } startActivity(intent); finish();
-		 */
 	}
 
 	private void dLog(String message) {
@@ -308,4 +377,14 @@ public class SelectStoreActivity extends Activity {
 		}
 	}
 
+	private void showToast(final String message) {
+		runOnUiThread(new Runnable() {
+
+			@Override
+			public void run() {
+				Toast.makeText(SelectStoreActivity.this, message, Toast.LENGTH_LONG)
+						.show();
+			}
+		});
+	}
 }

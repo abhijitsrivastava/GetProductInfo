@@ -27,6 +27,6 @@ public class GetStoreTask extends AsyncTask<String, Void, List<Store>> {
 	@Override
 	protected void onPostExecute(List<Store> storesList) {
 		super.onPostExecute(storesList);
-		((SelectStoreActivity) activity).onCompleteGetStoreTask(storesList);
+		//((SelectStoreActivity) activity).onCompleteGetStoreTask(storesList);
 	}
 }

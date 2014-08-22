@@ -6,12 +6,19 @@ public class Constants {
 	
 	public static final String POST_DATA = "platform=android&serviceID=getProductDetail&outletId=1000&applicationName=PRODUCTADVISOR&cacheid=&userName=admin&storeWebServicesIp=10.10.10.10%3A8080&channel=rc&appver=1.0.25&appID=PAMM&productId=";
 	public static final String POST_DATA_FOR_COMPETITOR = "platform=android&serviceID=getCompetitorPrices_NL&outletId=1000&applicationName=PRODUCTADVISOR&cacheid=&userName=admin&storeWebServicesIp=10.10.10.10%3A8080&channel=rc&appver=1.0.25&appID=PAMM&productId=";
+	
 	public static final String POST_DATA_FOR_STORES = "platform=android&serviceID=showStores&channel=rc&appID=AdminBackend&key=&myID=2";
-
-	public static final String OUTLET_ID = "platform=android&serviceID=getProductDetail&outletId=";
+	
+	// show product info data
+	public static final String SERVICE_ID_PRODUCT = "platform=android&serviceID=getProductDetail";
+	
+	public static final String OUTLET_ID = "&outletId=";
 	public static final String STORE_WEB_SERVICE_IP = "&applicationName=PRODUCTADVISOR&cacheid=&userName=admin&storeWebServicesIp=";
 	public static final String PRODUCT_ID = "&channel=rc&appver=1.0.25&appID=PAMM&productId=";
 
+	// show product competitor data
+	public static final String SERVICE_ID_COMPETITOR = "platform=android&serviceID=getProductDetail&outletId=";
+	
 	// product keys
 	public static final String KEY_NAME = "NAME";
 	public static final String KEY_STOCK6 = "STOCK6";
@@ -21,10 +28,11 @@ public class Constants {
 	public static final String KEY_STOCK2 = "STOCK2";
 	
 	// outlet keys
-	public static final String KEY_OUTLET_ID = "outlet_id";
+	public static final String KEY_STORE_ID = "store_id";
 	public static final String KEY_STORE_WEB_SERVICE_IP = "store_web_service_ip";
 	
 	public static final String KEY_IS_COMING_FROM_APP_LAUNCH_ACTIVITY = "isComingFromAppLaunchActivity";
 	
 	public static final String KEY_STORE_NAME = "store_name";
+	public static final String KEY_STORE_LIST = "store_list";
 }

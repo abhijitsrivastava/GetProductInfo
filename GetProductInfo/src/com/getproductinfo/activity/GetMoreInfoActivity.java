@@ -24,6 +24,7 @@ import com.getproductinfo.model.Competitor;
 import com.getproductinfo.model.Constants;
 import com.getproductinfo.utils.GetDetailTask;
 import com.getproductinfo.utils.GetMoreInfoTask;
+import com.getproductinfo.utils.Utils;
 import com.github.barcodeeye.scan.CaptureQRCodeActivity;
 import com.google.android.glass.app.Card;
 import com.google.android.glass.media.Sounds;
@@ -51,7 +52,7 @@ public class GetMoreInfoActivity extends Activity {
 		getWindow().requestFeature(WindowUtils.FEATURE_VOICE_COMMANDS);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-		//setContentView(R.layout.activity_show_result);
+		// setContentView(R.layout.activity_show_result);
 
 		mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 		mGestureDetector = createGestureDetector(this);
@@ -61,7 +62,15 @@ public class GetMoreInfoActivity extends Activity {
 			productId = bundle.getString("product_id");
 		}
 
-		new GetMoreInfoTask(GetMoreInfoActivity.this).execute(productId);
+		String outletId = Utils.getStringPreferences(GetMoreInfoActivity.this,
+				Constants.KEY_STORE_ID);
+		String storeWebServiceIp = Utils.getStringPreferences(
+				GetMoreInfoActivity.this, Constants.KEY_STORE_WEB_SERVICE_IP);
+
+		new GetMoreInfoTask(GetMoreInfoActivity.this)
+				.execute(Constants.SERVICE_ID_COMPETITOR + Constants.OUTLET_ID
+						+ outletId + Constants.STORE_WEB_SERVICE_IP
+						+ storeWebServiceIp + Constants.PRODUCT_ID + productId);
 	}
 
 	@Override
@@ -119,7 +128,6 @@ public class GetMoreInfoActivity extends Activity {
 				break;
 			case 2: // Change Store : start SelectOutletActivity
 				intent = new Intent(this, SelectStoreActivity.class);
-				intent.putExtra("product_id", productId);
 				startActivity(intent);
 				finish();
 				break;
@@ -260,7 +268,8 @@ public class GetMoreInfoActivity extends Activity {
 			mCardScrollView.setAdapter(adapter);
 			mCardScrollView.activate();
 			setContentView(mCardScrollView);
-			Toast.makeText(this, "Scroll left/right to explore more", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, "Scroll left/right to explore more",
+					Toast.LENGTH_SHORT).show();
 		} else {
 			card = new Card(this);
 			card.setText("No competitor prices found.");

@@ -74,24 +74,20 @@ public class GetStore {
 			conn.disconnect();
 
 		} catch (MalformedURLException e) {
-
+			responseObject = null;
 			e.printStackTrace();
 
 		} catch (IOException e) {
-
+			responseObject = null;
 			e.printStackTrace();
 
 		} catch (RuntimeException e) {
-			jsonString = "{\"message\":\"Internal server error\",\"statusCode\":\"err001\"}";
-			try {
-				responseObject = new JSONObject(jsonString);
-			} catch (JSONException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			e.printStackTrace();
+			responseObject = null;
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			responseObject = null;
 		}
 		return responseObject;
 
@@ -137,6 +133,9 @@ public class GetStore {
 				Constants.SERVICE_URL);
 
 		try {
+			if(null == jsonResponse){
+				return null;
+			}
 			JSONArray storeJsonArray = jsonResponse
 					.getJSONArray("stores");
 
@@ -148,8 +147,8 @@ public class GetStore {
 				Store store = new Store();
 				store.setName(storeJsonObject.getString("STORE_NAME"));
 				store.setNumber(storeJsonObject.getString("STORE_NUMBER"));
-				store.setActive(storeJsonObject.getString("ACTIVE"));
 				store.setWwsEndpoint(storeJsonObject.getString("WWS_ENDPOINT"));
+				store.setActive(storeJsonObject.getString("ACTIVE"));
 				storeList.add(store);
 			}
 			System.out.println("storeList " + storeList);

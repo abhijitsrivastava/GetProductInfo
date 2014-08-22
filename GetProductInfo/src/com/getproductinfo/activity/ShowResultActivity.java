@@ -19,7 +19,9 @@ import android.widget.TextView;
 
 import com.getproductinfo.model.Constants;
 import com.getproductinfo.utils.GetDetailTask;
+import com.getproductinfo.utils.GetMoreInfoTask;
 import com.getproductinfo.utils.LoadImageFromUrlTask;
+import com.getproductinfo.utils.Utils;
 import com.github.barcodeeye.scan.CaptureQRCodeActivity;
 import com.google.android.glass.media.Sounds;
 import com.google.android.glass.touchpad.Gesture;
@@ -71,7 +73,20 @@ public class ShowResultActivity extends Activity {
 			productId = bundle.getString("product_id");
 		}
 
-		new GetDetailTask(ShowResultActivity.this).execute(Constants.POST_DATA + productId);
+		String outletId = Utils.getStringPreferences(ShowResultActivity.this,
+				Constants.KEY_STORE_ID);
+		String storeWebServiceIp = Utils.getStringPreferences(
+				ShowResultActivity.this, Constants.KEY_STORE_WEB_SERVICE_IP);
+		
+		dLog("complete url : " + Constants.SERVICE_ID_PRODUCT + Constants.OUTLET_ID
+				+ outletId + Constants.STORE_WEB_SERVICE_IP
+				+ storeWebServiceIp + Constants.PRODUCT_ID + productId);
+		
+		new GetDetailTask(ShowResultActivity.this)
+		.execute(Constants.SERVICE_ID_PRODUCT + Constants.OUTLET_ID
+				+ outletId + Constants.STORE_WEB_SERVICE_IP
+				+ storeWebServiceIp + Constants.PRODUCT_ID + productId);
+
 		// showScannedCode(ScannedCode);
 	}
 
@@ -130,6 +145,8 @@ public class ShowResultActivity extends Activity {
 			menu.addSubMenu(0, 2, Menu.NONE,
 					getResources().getString(R.string.scan_next));
 			menu.addSubMenu(0, 3, Menu.NONE,
+					getResources().getString(R.string.change_store));
+			menu.addSubMenu(0, 4, Menu.NONE,
 					getResources().getString(R.string.close_app));
 			return true;
 		}
@@ -144,8 +161,8 @@ public class ShowResultActivity extends Activity {
 		if (featureId == WindowUtils.FEATURE_VOICE_COMMANDS) {
 			switch (item.getItemId()) {
 			case 1: // Get More Info : start GetMoreInfoActivity
-				intent = new Intent(this,GetMoreInfoActivity.class);
-				intent.putExtra("product_id",productId);
+				intent = new Intent(this, GetMoreInfoActivity.class);
+				intent.putExtra("product_id", productId);
 				startActivity(intent);
 				finish();
 				break;
@@ -154,7 +171,12 @@ public class ShowResultActivity extends Activity {
 				startActivity(intent);
 				finish();
 				break;
-			case 3: // Close : close the app
+			case 3: // Change Store : open SelectStoreActivity
+				intent = new Intent(this, SelectStoreActivity.class);
+				startActivity(intent);
+				finish();
+				break;
+			case 4: // Close : close the app
 				finish();
 				break;
 			default:
@@ -175,6 +197,8 @@ public class ShowResultActivity extends Activity {
 		menu.addSubMenu(0, 2, Menu.NONE,
 				getResources().getString(R.string.scan_next));
 		menu.addSubMenu(0, 3, Menu.NONE,
+				getResources().getString(R.string.change_store));
+		menu.addSubMenu(0, 4, Menu.NONE,
 				getResources().getString(R.string.close_app));
 		return super.onPrepareOptionsMenu(menu);
 	}
@@ -184,10 +208,10 @@ public class ShowResultActivity extends Activity {
 		mAudioManager.playSoundEffect(Sounds.TAP);
 		Intent intent = null;
 
-		switch(item.getItemId()) {
+		switch (item.getItemId()) {
 		case 1: // Get More Info : start GetMoreInfoActivity
-			intent = new Intent(this,GetMoreInfoActivity.class);
-			intent.putExtra("product_id",productId);
+			intent = new Intent(this, GetMoreInfoActivity.class);
+			intent.putExtra("product_id", productId);
 			startActivity(intent);
 			finish();
 			break;
@@ -196,7 +220,12 @@ public class ShowResultActivity extends Activity {
 			startActivity(intent);
 			finish();
 			break;
-		case 3: // Close : close the app
+		case 3:  // Change Store : open SelectStoreActivity
+			intent = new Intent(this, SelectStoreActivity.class);
+			startActivity(intent);
+			finish();
+			break;
+		case 4: // Close : close the app
 			finish();
 			break;
 		default:
@@ -296,7 +325,6 @@ public class ShowResultActivity extends Activity {
 		new LoadImageFromUrlTask(ShowResultActivity.this, imageViewProduct)
 				.execute(imageUrl);
 	}
-	
 
 	private void dLog(String message) {
 		Log.d(ShowResultActivity.this.getLocalClassName(), message);

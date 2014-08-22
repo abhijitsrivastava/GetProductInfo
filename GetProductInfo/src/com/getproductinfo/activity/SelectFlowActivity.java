@@ -35,7 +35,7 @@ public class SelectFlowActivity extends Activity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		
 		Card welcomeCard = new Card(this);
-		welcomeCard.setText("To Begin Choose An Option.\nScan Product\nChange Store\nClose");
+		welcomeCard.setText("Select An Option.\nScan\nChange Store\nClose");
 		View welcomeCardView = welcomeCard.getView();
 
 		setContentView(welcomeCardView);
