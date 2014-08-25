@@ -2,6 +2,7 @@ package com.getproductinfo.utils;
 
 import org.json.JSONObject;
 
+import com.getproductinfo.timeline.ServerConnection;
 import com.getproductinfo.timeline.Test;
 
 import android.os.AsyncTask;
@@ -26,16 +27,17 @@ public class PublishOnTimeLineTask extends AsyncTask<Void, Void, Void> {
 	protected Void doInBackground(Void... params) {
 		// TODO Auto-generated method stub
 		// code to get access token from refresh token
-		getAccessTokenFromRefreshToken(refreshToken);
+		getAccessTokenFromRefreshToken();
 
 		new Test().publishOnTimeLine(productObject, productId, outletId,
 				accessToken);
 		return null;
 	}
 
-	private void getAccessTokenFromRefreshToken(String refreshToken) {
+	private void getAccessTokenFromRefreshToken() {
 		// TODO Auto-generated method stub
-
+		accessToken = ServerConnection
+				.postHttpsUrlConnectionForAccessToken(refreshToken);
 	}
 
 }

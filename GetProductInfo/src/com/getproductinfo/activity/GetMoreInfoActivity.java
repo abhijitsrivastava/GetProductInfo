@@ -280,11 +280,11 @@ public class GetMoreInfoActivity extends Activity {
 	}
 
 	private void dLog(String message) {
-		Log.d(GetMoreInfoActivity.this.getLocalClassName(), message);
+		//Log.d(GetMoreInfoActivity.this.getLocalClassName(), message);
 	}
 
 	private void eLog(String message) {
-		Log.e(GetMoreInfoActivity.this.getLocalClassName(), message);
+		//Log.e(GetMoreInfoActivity.this.getLocalClassName(), message);
 	}
 
 	private class GetMoreInfoCardScrollAdapter extends CardScrollAdapter {

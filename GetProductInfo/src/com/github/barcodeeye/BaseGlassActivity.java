@@ -66,16 +66,16 @@ public class BaseGlassActivity extends Activity implements FingerListener, Scrol
             @Override
             public boolean onGesture(Gesture gesture) {
                 if (gesture == Gesture.TAP) {
-                    Log.v(TAG, "onSwipeTap");
+                    //Log.v(TAG, "onSwipeTap");
                     return onTap();
                 } else if (gesture == Gesture.TWO_TAP) {
-                    Log.v(TAG, "onSwipeTwoTap");
+                    //Log.v(TAG, "onSwipeTwoTap");
                     return onTwoTap();
                 } else if (gesture == Gesture.SWIPE_RIGHT) {
-                    Log.v(TAG, "onSwipeRight");
+                   //Log.v(TAG, "onSwipeRight");
                     return onSwipeRight();
                 } else if (gesture == Gesture.SWIPE_LEFT) {
-                    Log.v(TAG, "onSwipeLeft");
+                    //Log.v(TAG, "onSwipeLeft");
                     return onSwipeLeft();
                 }
                 return false;

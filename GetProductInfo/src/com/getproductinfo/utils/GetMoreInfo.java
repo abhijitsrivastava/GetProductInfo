@@ -69,7 +69,7 @@ public class GetMoreInfo {
 
 			in = new BufferedInputStream(conn.getInputStream());
 			jsonString = getStringFromInputStream(in);
-			System.out.println("JSON Response : " + jsonString);
+			//System.out.println("JSON Response : " + jsonString);
 			responseObject = new JSONObject(jsonString);
 
 			conn.disconnect();
@@ -158,7 +158,7 @@ public class GetMoreInfo {
 				competitor.setCompetitorPrice(competitorJsonObject
 						.getString("competitorPreis"));
 			}
-			System.out.println("competitorList " + competitorList);
+			//System.out.println("competitorList " + competitorList);
 			return competitorList;
 
 		} catch (JSONException e) {

@@ -68,7 +68,7 @@ public class GetStore {
 
 			in = new BufferedInputStream(conn.getInputStream());
 			jsonString = getStringFromInputStream(in);
-			System.out.println("JSON Response : " + jsonString);
+			//System.out.println("JSON Response : " + jsonString);
 			responseObject = new JSONObject(jsonString);
 
 			conn.disconnect();
@@ -151,7 +151,7 @@ public class GetStore {
 				store.setActive(storeJsonObject.getString("ACTIVE"));
 				storeList.add(store);
 			}
-			System.out.println("storeList " + storeList);
+			//System.out.println("storeList " + storeList);
 			return storeList;
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block

@@ -255,11 +255,11 @@ public class AppLaunchActivity extends Activity {
 
 	
 	private void dLog(String message) {
-		Log.d(AppLaunchActivity.this.getLocalClassName(), message);
+		//Log.d(AppLaunchActivity.this.getLocalClassName(), message);
 	}
 
 	private void eLog(String message) {
-		Log.e(AppLaunchActivity.this.getLocalClassName(), message);
+		//Log.e(AppLaunchActivity.this.getLocalClassName(), message);
 	}
 	
 	private void showToast(final String message) {

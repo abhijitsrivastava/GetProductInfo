@@ -337,11 +337,11 @@ public class ShowResultActivity extends Activity {
 	}
 
 	private void dLog(String message) {
-		Log.d(ShowResultActivity.this.getLocalClassName(), message);
+		//Log.d(ShowResultActivity.this.getLocalClassName(), message);
 	}
 
 	private void eLog(String message) {
-		Log.e(ShowResultActivity.this.getLocalClassName(), message);
+		//Log.e(ShowResultActivity.this.getLocalClassName(), message);
 	}
 
 }

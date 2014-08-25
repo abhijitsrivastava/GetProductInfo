@@ -77,10 +77,10 @@ public final class CaptureActivityHandler extends Handler {
     @Override
     public void handleMessage(Message message) {
         if (message.what == R.id.restart_preview) {
-            Log.d(TAG, "Got restart preview message");
+           //Log.d(TAG, "Got restart preview message");
             restartPreviewAndDecode();
         } else if (message.what == R.id.decode_succeeded) {
-            Log.d(TAG, "Got decode succeeded message");
+           //Log.d(TAG, "Got decode succeeded message");
             state = State.SUCCESS;
             Bundle bundle = message.getData();
             Bitmap barcode = null;
@@ -104,11 +104,11 @@ public final class CaptureActivityHandler extends Handler {
             cameraManager.requestPreviewFrame(decodeThread.getHandler(),
                     R.id.decode);
         } else if (message.what == R.id.return_scan_result) {
-            Log.d(TAG, "Got return scan result message");
+            //Log.d(TAG, "Got return scan result message");
             activity.setResult(Activity.RESULT_OK, (Intent) message.obj);
             activity.finish();
         } else if (message.what == R.id.launch_product_query) {
-            Log.d(TAG, "Got product query message");
+            //log.d(TAG, "Got product query message");
             String url = (String) message.obj;
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
@@ -118,7 +118,7 @@ public final class CaptureActivityHandler extends Handler {
             String browserPackageName = null;
             if (resolveInfo != null && resolveInfo.activityInfo != null) {
                 browserPackageName = resolveInfo.activityInfo.packageName;
-                Log.d(TAG, "Using browser in package " + browserPackageName);
+                //log.d(TAG, "Using browser in package " + browserPackageName);
             }
             // Needed for default Android browser / Chrome only apparently
             if ("com.android.browser".equals(browserPackageName)
@@ -131,7 +131,7 @@ public final class CaptureActivityHandler extends Handler {
             try {
                 activity.startActivity(intent);
             } catch (ActivityNotFoundException ignored) {
-                Log.w(TAG, "Can't find anything to handle VIEW of URI " + url);
+                //log.w(TAG, "Can't find anything to handle VIEW of URI " + url);
             }
         }
     }

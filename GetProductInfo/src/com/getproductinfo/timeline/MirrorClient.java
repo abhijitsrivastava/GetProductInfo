@@ -69,7 +69,7 @@ public class MirrorClient {
       Mirror.Contacts contacts = getMirror(credential).contacts();
       return contacts.get(id).execute();
     } catch (GoogleJsonResponseException e) {
-      LOG.warning("Could not find contact with ID " + id);
+     // LOG.warning("Could not find contact with ID " + id);
       return null;
     }
   }
@@ -89,7 +89,7 @@ public class MirrorClient {
    */
   public static Subscription insertSubscription(Credential credential, String callbackUrl,
       String userId, String collection) throws IOException {
-    LOG.info("Attempting to subscribe verify_token " + userId + " with callback " + callbackUrl);
+   // LOG.info("Attempting to subscribe verify_token " + userId + " with callback " + callbackUrl);
 
     // Rewrite "appspot.com" to "Appspot.com" as a workaround for
     // http://b/6909300.

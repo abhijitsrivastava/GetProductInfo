@@ -205,11 +205,11 @@ public class SelectFlowActivity extends Activity {
 	}
 
 	private void dLog(String message) {
-		Log.d(SelectFlowActivity.this.getLocalClassName(), message);
+		//Log.d(SelectFlowActivity.this.getLocalClassName(), message);
 	}
 
 	private void eLog(String message) {
-		Log.e(SelectFlowActivity.this.getLocalClassName(), message);
+		//Log.e(SelectFlowActivity.this.getLocalClassName(), message);
 	}
 
 }

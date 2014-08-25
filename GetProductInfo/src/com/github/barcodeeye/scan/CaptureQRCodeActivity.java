@@ -33,6 +33,7 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.getproductinfo.activity.AppLaunchActivity;
 import com.getproductinfo.activity.R;
@@ -83,6 +84,8 @@ public final class CaptureQRCodeActivity extends BaseGlassActivity implements
     private InactivityTimer mInactivityTimer;
     private BeepManager mBeepManager;
     private AmbientLightManager mAmbientLightManager;
+    private TextView textViewMsg;
+    private boolean isComingForAccessNRefreshToken = false;
    // private ImageManager mImageManager;
 
     public static Intent newIntent(Context context) {
@@ -120,6 +123,18 @@ public final class CaptureQRCodeActivity extends BaseGlassActivity implements
         mViewfinderView = (ViewfinderView) findViewById(R.id.viewfinder_view);
 
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+        textViewMsg = (TextView) findViewById(R.id.textViewMsg);
+         
+        Bundle bundle = getIntent().getExtras();
+        if (null != bundle) {
+        	isComingForAccessNRefreshToken = bundle.getBoolean(Constants.KEY_IS_COMING_FOR_ACCESS_N_REFRESH_TOKEN);
+		}
+        
+        if (isComingForAccessNRefreshToken) {
+        	textViewMsg.setText("Open http://h2332311.stratoserver.net:8080/ to Scan QRCode");
+		} else {
+			textViewMsg.setText("Scan Product");
+		}
     }
 
     @Override
@@ -295,20 +310,17 @@ public final class CaptureQRCodeActivity extends BaseGlassActivity implements
     // Put up our own UI for how to handle the decoded contents.
     private void handleDecodeInternally(Result rawResult, Bitmap barcode) {
 
-        Log.v(TAG, rawResult.getText().toString());
+        //Log.v(TAG, rawResult.getText().toString());
         String scannedData = rawResult.getText().toString();
-        
-        Bundle bundle = getIntent().getExtras();
-        boolean isComingForAccessNRefreshToken = bundle.getBoolean(Constants.KEY_IS_COMING_FOR_ACCESS_N_REFRESH_TOKEN);
-        
+              
         Intent intent = null;
         
         if (scannedData != null) {
         	if (isComingForAccessNRefreshToken) {
         		
         		String[] tokens = scannedData.split(",");
-        		
-        		Utils.saveStringPreferences(CaptureQRCodeActivity.this, Constants.KEY_ACCESSS_TOKEN, tokens[0]);
+        		        		
+        		Utils.saveStringPreferences(CaptureQRCodeActivity.this, Constants.KEY_ACCESS_TOKEN, tokens[0]);
         		Utils.saveStringPreferences(CaptureQRCodeActivity.this, Constants.KEY_REFRESH_TOKEN, tokens[1]);
         		
         		Utils.saveBooleanPreferences(CaptureQRCodeActivity.this, Constants.KEY_TIMELINE_SETUP_DONE, true);
@@ -320,8 +332,7 @@ public final class CaptureQRCodeActivity extends BaseGlassActivity implements
              	
         		
     		} else {
-    			Log.d("inside if", "qr code matched");        
-            	
+    			//Log.d("inside if", "qr code matched");        
             	intent = new Intent(CaptureQRCodeActivity.this, ShowResultActivity.class);
             	intent.putExtra("product_id",scannedData);
             	
@@ -329,7 +340,7 @@ public final class CaptureQRCodeActivity extends BaseGlassActivity implements
             	startActivity(intent);
     		}
 	} else {
-			Log.d("inside else", "qr code not matched");
+			//Log.d("inside else", "qr code not matched");
 			onPause();
 			onResume();
 		}     

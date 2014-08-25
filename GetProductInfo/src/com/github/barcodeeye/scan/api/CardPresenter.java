@@ -86,7 +86,7 @@ public class CardPresenter implements Parcelable {
         card.setFootnote(mFooter);
         for (Uri uri : mImages) {
             if (uri != null) {
-                Log.w(TAG, "ImageUri: " + uri.toString());
+                //Log.w(TAG, "ImageUri: " + uri.toString());
                  //card.addImage(uri);
             } else {
                 Log.w(TAG, "We got a null imageUri!");

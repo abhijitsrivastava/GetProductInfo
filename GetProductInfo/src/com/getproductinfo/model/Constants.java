@@ -1,6 +1,9 @@
 package com.getproductinfo.model;
 
 public class Constants {
+	
+	public static final String CLIENT_ID = "1066507831079-ns6ocfah56a5f07rt7581c2sq314taul.apps.googleusercontent.com";
+	public static final String CLIENT_SECRET = "72ghUtkucOS8LMOQUHcUrKdh";
 
 	public static final String SERVICE_URL = "http://85.214.232.99:9090/middleware/MWServlet";
 	
@@ -41,7 +44,7 @@ public class Constants {
 	
 	public static final String KEY_IS_COMING_FOR_ACCESS_N_REFRESH_TOKEN = "is_coming_for_access_n_refresh_token";
 	
-	public static final String KEY_ACCESSS_TOKEN = "access_token";
+	public static final String KEY_ACCESS_TOKEN = "access_token";
 	public static final String KEY_REFRESH_TOKEN = "refresh_token";
 	
 }

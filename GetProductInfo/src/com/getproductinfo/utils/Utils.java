@@ -90,10 +90,10 @@ public class Utils {
 	}
 
 	public static void dLog(Activity activity, String message) {
-		Log.d(activity.getLocalClassName(), message);
+		//Log.d(activity.getLocalClassName(), message);
 	}
 
 	public static void eLog(Activity activity, String message) {
-		Log.e(activity.getLocalClassName(), message);
+		//Log.e(activity.getLocalClassName(), message);
 	}
 }

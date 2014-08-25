@@ -337,11 +337,11 @@ public class SelectStoreActivity extends Activity {
 	}
 
 	private void dLog(String message) {
-		Log.d(SelectStoreActivity.this.getLocalClassName(), message);
+		//Log.d(SelectStoreActivity.this.getLocalClassName(), message);
 	}
 
 	private void eLog(String message) {
-		Log.e(SelectStoreActivity.this.getLocalClassName(), message);
+		//Log.e(SelectStoreActivity.this.getLocalClassName(), message);
 	}
 
 	private class SelectStoreCardScrollAdapter extends CardScrollAdapter {
