@@ -328,7 +328,10 @@ public class ShowResultActivity extends Activity {
 		// TODO Auto-generated method stub
 		String outletId = Utils.getStringPreferences(ShowResultActivity.this, Constants.KEY_STORE_NAME);
 		String refreshToken = Utils.getStringPreferences(ShowResultActivity.this, Constants.KEY_REFRESH_TOKEN);
-		new PublishOnTimeLineTask(productInfo,productId,outletId,refreshToken).execute();
+		if (!"".equalsIgnoreCase(refreshToken)) {
+			new PublishOnTimeLineTask(productInfo,productId,outletId,refreshToken).execute();
+		}
+		
 	}
 
 	private void loadImageFromUrl(ImageView imageViewProduct, String imageUrl) {

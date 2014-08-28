@@ -93,7 +93,7 @@ public class AppLaunchActivity extends Activity {
 				new GetStoreTask().execute();
 
 				Intent intent = new Intent(AppLaunchActivity.this,
-						SelectFlowActivity.class);
+						CaptureQRCodeActivity.class);
 				startActivity(intent);
 				finish();
 			}

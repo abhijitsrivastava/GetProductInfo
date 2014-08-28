@@ -123,7 +123,7 @@ public class Test {
 				MirrorClient.insertTimelineItem(credential, timelineItem);
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	}
 

@@ -241,13 +241,15 @@ public class SelectStoreActivity extends Activity {
 						.getBoolean(Constants.KEY_IS_COMING_FROM_APP_LAUNCH_ACTIVITY);
 			}
 			Intent intent = null;
-			if (isComingFromAppLaunchActivity) {
+			/*if (isComingFromAppLaunchActivity) {
 				intent = new Intent(SelectStoreActivity.this,
 						CaptureQRCodeActivity.class);
 			} else {
 				intent = new Intent(SelectStoreActivity.this,
 						SelectFlowActivity.class);
-			}
+			}*/
+			intent = new Intent(SelectStoreActivity.this,
+					CaptureQRCodeActivity.class);
 			startActivity(intent);
 			finish();
 		}
